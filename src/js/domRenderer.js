@@ -1,3 +1,5 @@
+//todo someday: reactivate the edit buttons and made the edit function
+
 export function displayProjectOnPage(project, taskModal, deleteProjectCallback) {
 
 
@@ -10,8 +12,8 @@ export function displayProjectOnPage(project, taskModal, deleteProjectCallback) 
     const description = document.createElement('p');
     description.textContent = project.description;
 
-    const editButton = document.createElement('button');
-    editButton.textContent = "Edit Project";
+    // const editButton = document.createElement('button');
+    // editButton.textContent = "Edit Project";
 
     const deleteButton = document.createElement('button');
     deleteButton.textContent = "Delete Project";
@@ -26,7 +28,7 @@ export function displayProjectOnPage(project, taskModal, deleteProjectCallback) 
         console.log(`Opening task modal for project: ${taskModal.currentProjectId}`);
     });
 
-    projectDiv.append(name, description, editButton, deleteButton, taskButton);
+    projectDiv.append(name, description, deleteButton, taskButton);
     document.getElementById('todo-div').appendChild(projectDiv);
 }
 
@@ -47,8 +49,8 @@ export function displayTaskOnPage(task, deleteTaskCallback) {
     const taskPriorityElement = document.createElement('p')
     taskPriorityElement.textContent = task.priority
 
-    const editTaskButton = document.createElement('button')
-    editTaskButton.textContent = 'Edit Task'
+    //const editTaskButton = document.createElement('button')
+    //editTaskButton.textContent = 'Edit Task'
 
     const deleteTaskButton = document.createElement('button')
     deleteTaskButton.textContent = 'Delete Task'
@@ -58,7 +60,7 @@ export function displayTaskOnPage(task, deleteTaskCallback) {
     taskDiv.appendChild(taskDescriptionElement)
     taskDiv.appendChild(taskDateElement)
     taskDiv.appendChild(taskPriorityElement)
-    taskDiv.appendChild(editTaskButton)
+    // taskDiv.appendChild(editTaskButton)
     taskDiv.appendChild(deleteTaskButton)
 
     const Container = document.getElementById('todo-div');
