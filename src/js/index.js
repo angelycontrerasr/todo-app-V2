@@ -11,28 +11,32 @@ import {
     cleanProjectInputBoxesValue,
     cleanTasksInputBoxesValue
 } from './domRenderer.js';
-
+let allProjects = [];
+let allTasks = [];
 let projects = loadFromLocalStorage('projects');
 let tasks = loadFromLocalStorage('tasks');
 
 // Crear modales
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("DOM loaded 💪");
 
-    const projectModal = createModal({
-        modalId: "new-project-modal",
-        openButtonId: "open-new-project-modal",
-        closeButtonSelector: "close-new-project-modal"
-    });
-    const taskModal = createModal({
-        modalId: "new-task-modal",
-        openButtonId: "open-new-task-modal",
-        closeButtonSelector: "close-new-task-modal"
-    });
+const projectModalConfig = { // Renamed for clarity
+    modalId: "new-project-modal",
+    openButtonId: "open-new-project-modal",
+    closeButtonSelector: "close-new-project-modal",
+};
 
-    projectModal.initEventListeners();
-    taskModal.initEventListeners();
-});
+// Configuration for the task modal (without an initial openButtonId)
+const taskModalConfig = {
+    modalId: "new-task-modal",
+    // We won't provide an openButtonId here because the button will be created dynamically per project
+    closeButtonSelector: "close-new-task-modal",
+};
+
+// Create instance of the modals
+const projectModal = createModal(projectModalConfig);
+const taskModal = createModal(taskModalConfig); // This instance doesn't have an initial button
+
+// Initialize the project modal
+projectModal.initEventListeners();
 // Renderizar proyectos y tareas existentes
 projects.forEach(project => {
     displayProjectOnPage(project, taskModal, deleteProject);
@@ -42,23 +46,40 @@ tasks.forEach(task => {
 });
 
 // Agregar nuevo proyecto
-document.getElementById("submit-project").addEventListener("click", () => {
-    const project = RetrieveProjectInfo();
-    projects.push(project);
-    saveToLocalStorage("projects", projects);
-    displayProjectOnPage(project, taskModal, deleteProject);
-    cleanProjectInputBoxesValue();
-    projectModal.close();
+const saveProjectButton = document.getElementById("save-project-button"); // Renamed for clarity
+
+// Add an event listener to the save project button
+saveProjectButton?.addEventListener("click", (e) => {
+    e.preventDefault(); // Prevents the form from submitting and refreshing the page
+
+    const newProject = RetrieveProjectInfo();
+    if (newProject) {
+        allProjects.push(newProject);
+        console.log("Project created:", newProject);
+        console.log("All current projects:", allProjects);
+        displayProjectOnPage(newProject); // Display the new project
+        cleanProjectInputBoxesValue(); // Clear the input fields
+        projectModal.close(); // Close the project creation modal
+    } else {
+        console.log("Failed to create project. Check input values.");
+    }
 });
 
 // Agregar nueva tarea
-document.getElementById("submit-task").addEventListener("click", () => {
-    const task = retrieveTaskInfo(taskModal.currentProjectId);
-    tasks.push(task);
-    saveToLocalStorage("tasks", tasks);
-    displayTaskOnPage(task, deleteTask);
-    cleanTasksInputBoxesValue();
-    taskModal.close();
+const saveTaskButton = document.getElementById('save-task-button')
+saveTaskButton?.addEventListener("click", (e) => {
+    e.preventDefault();
+    const newTask = retrieveTaskInfo()
+    if (newTask) {
+        console.log("Task Created", newTask)
+        allTasks.push(newTask);
+        taskModal.close();
+        displayTaskOnPage(newTask);
+        taskModal.currentProjectId = null;
+        cleanTasksInputBoxesValue();
+    } else {
+        console.log("Failed to create task")
+    }
 });
 
 // Eliminar proyecto y sus tareas
