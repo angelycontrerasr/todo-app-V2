@@ -11,13 +11,9 @@ import {
     cleanProjectInputBoxesValue,
     cleanTasksInputBoxesValue
 } from './domRenderer.js';
-let allProjects = [];
-let allTasks = [];
-let projects = loadFromLocalStorage('projects');
-let tasks = loadFromLocalStorage('tasks');
-
+let allTasks = loadFromLocalStorage('tasks');
 // Crear modales
-
+let allProjects = loadFromLocalStorage('projects');
 const projectModalConfig = { // Renamed for clarity
     modalId: "new-project-modal",
     openButtonId: "open-new-project-modal",
@@ -38,10 +34,10 @@ const taskModal = createModal(taskModalConfig); // This instance doesn't have an
 // Initialize the project modal
 projectModal.initEventListeners();
 // Renderizar proyectos y tareas existentes
-projects.forEach(project => {
+allProjects.forEach(project => {
     displayProjectOnPage(project, taskModal, deleteProject);
 });
-tasks.forEach(task => {
+allTasks.forEach(task => {
     displayTaskOnPage(task, deleteTask);
 });
 
@@ -55,12 +51,14 @@ saveProjectButton?.addEventListener("click", (e) => {
     const newProject = RetrieveProjectInfo();
     if (newProject) {
         allProjects.push(newProject);
+        saveToLocalStorage('projects', allProjects); // 🔥 Aquí lo guardás
         console.log("Project created:", newProject);
         console.log("All current projects:", allProjects);
-        displayProjectOnPage(newProject); // Display the new project
-        cleanProjectInputBoxesValue(); // Clear the input fields
-        projectModal.close(); // Close the project creation modal
-    } else {
+        displayProjectOnPage(newProject);
+        cleanProjectInputBoxesValue();
+        projectModal.close();
+    }
+    else {
         console.log("Failed to create project. Check input values.");
     }
 });
@@ -73,6 +71,7 @@ saveTaskButton?.addEventListener("click", (e) => {
     if (newTask) {
         console.log("Task Created", newTask)
         allTasks.push(newTask);
+        saveToLocalStorage('tasks', allTasks);
         taskModal.close();
         displayTaskOnPage(newTask);
         taskModal.currentProjectId = null;
@@ -84,14 +83,14 @@ saveTaskButton?.addEventListener("click", (e) => {
 
 // Eliminar proyecto y sus tareas
 function deleteProject(projectId) {
-    projects = projects.filter(project => project.id !== projectId);
-    tasks = tasks.filter(task => task.projectId !== projectId);
-    saveToLocalStorage("projects", projects);
-    saveToLocalStorage("tasks", tasks);
+    allProjects = allProjects.filter(project => project.id !== projectId);
+    allTasks = allTasks.filter(task => task.projectId !== projectId);
+    saveToLocalStorage("projects", allProjects);
+    saveToLocalStorage("tasks", allTasks);
     document.querySelector(`[data-project-id="${projectId}"]`).remove();
     document.querySelectorAll(`[data-task-id]`).forEach(taskEl => {
         const taskId = taskEl.getAttribute("data-task-id");
-        const task = tasks.find(t => t.id === taskId);
+        const task = allTasks.find(t => t.id === taskId);
         if (task && task.projectId === projectId) {
             taskEl.remove();
         }
@@ -100,7 +99,7 @@ function deleteProject(projectId) {
 
 // Eliminar tarea
 function deleteTask(taskId) {
-    tasks = tasks.filter(task => task.id !== taskId);
-    saveToLocalStorage("tasks", tasks);
+    allTasks = allTasks.filter(task => task.id !== taskId);
+    saveToLocalStorage("tasks", allTasks);
     document.querySelector(`[data-task-id="${taskId}"]`).remove();
 }

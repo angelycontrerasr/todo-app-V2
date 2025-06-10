@@ -28,30 +28,40 @@ export function displayProjectOnPage(project, taskModal, deleteProjectCallback) 
 }
 
 export function displayTaskOnPage(task, deleteTaskCallback) {
-    const taskDiv = document.createElement('div');
+    const taskDiv = document.createElement('div')
     taskDiv.classList.add('task-item');
-    taskDiv.setAttribute('data-task-id', task.id);
+    taskDiv.setAttribute('data-task-id', task.id)
 
-    const name = document.createElement('h2');
-    name.textContent = task.name;
-    const description = document.createElement('p');
-    description.textContent = task.description;
-    const date = document.createElement('p');
-    date.textContent = task.date;
-    const priority = document.createElement('p');
-    priority.textContent = task.priority;
+    const taskNameElement = document.createElement('h2')
+    taskNameElement.textContent = task.name
 
-    const editButton = document.createElement('button');
-    editButton.textContent = 'Edit Task';
+    const taskDescriptionElement = document.createElement('p')
+    taskDescriptionElement.textContent = task.description
 
-    const deleteButton = document.createElement('button');
-    deleteButton.textContent = 'Delete Task';
-    deleteButton.classList.add('delete-task-button');
-    deleteButton.addEventListener('click', () => deleteTaskCallback(task.id));
+    const taskDateElement = document.createElement('p')
+    taskDateElement.textContent = task.date
 
-    taskDiv.append(name, description, date, priority, editButton, deleteButton);
-    document.getElementById('todo-div').appendChild(taskDiv);
+    const taskPriorityElement = document.createElement('p')
+    taskPriorityElement.textContent = task.priority
+
+    const editTaskButton = document.createElement('button')
+    editTaskButton.textContent = 'Edit Task'
+
+    const deleteTaskButton = document.createElement('button')
+    deleteTaskButton.textContent = 'Delete Task'
+    deleteTaskButton.addEventListener('click', () => deleteTaskCallback(task.id));
+
+    taskDiv.appendChild(taskNameElement)
+    taskDiv.appendChild(taskDescriptionElement)
+    taskDiv.appendChild(taskDateElement)
+    taskDiv.appendChild(taskPriorityElement)
+    taskDiv.appendChild(editTaskButton)
+    taskDiv.appendChild(deleteTaskButton)
+
+    const Container = document.getElementById('todo-div');
+    Container.appendChild(taskDiv);
 }
+
 
 export function cleanProjectInputBoxesValue() {
     document.getElementById("question-project-name").value = "";
