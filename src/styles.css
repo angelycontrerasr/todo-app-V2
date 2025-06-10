@@ -1,6 +1,57 @@
 body {
     background-color: #D9D9D9;
+    /* We'll let #todo-div handle its specific grid areas */
+    /* Keeping this for overall layout if you have other elements */
+    display: grid;
+    grid-template-rows: auto auto 1fr; /* For header, new project button, and content */
+    grid-template-areas:
+        "new-project-button new-project-button"
+        "header header"
+        "main-content main-content"; /* A new area for your todo-div */
+    height: 100vh; /* Make sure body takes full height for grid to work well */
 }
+
+#header  {
+    grid-area: header;
+}
+#open-new-project-modal {
+    grid-area: new-project-button;
+    height: 3rem;
+    background-color: green;
+    font-size: 2rem;
+}
+
+#todo-div {
+    grid-area: main-content; /* Assign todo-div to the main-content area */
+    display: grid; /* Make todo-div a grid container */
+    grid-template-columns: 1fr 1fr; /* Two columns, equal width for projects and tasks */
+    /* No need for grid-template-areas here if we're just putting items directly */
+    /* We'll rely on grid's auto-placement or direct assignment */
+    gap: 20px; /* Give some space between your columns, for real! */
+    padding: 20px; /* A little padding so stuff isn't hugging the edges */
+}
+
+/* This is the key fix for project-item */
+.project-item {
+    /* No grid-area needed here, grid will auto-place them in the first column */
+    /* or you could explicitly place them if you wanted more complex layout */
+    /* For simple side-by-side, auto-placement in the first column works */
+    border: 1px solid #ccc; /* Just to see the boxes for now */
+    padding: 15px;
+    background-color: #f0f0f0;
+    height: 25%;
+}
+
+.task-item {
+    /* No grid-area needed here either, grid will auto-place them in the second column */
+    border: 1px solid #ccc; /* Again, for visual clarity */
+    padding: 15px;
+    background-color: #e0e0e0;
+    height: 35%;
+}
+
+
+/* Your existing modal styles are looking good! */
 .modal {
     display: none;
     position: fixed; /* Stays in the same spot on the screen */
@@ -21,11 +72,32 @@ body {
     background: #F1E2E2;
     padding: 20px;
     border-radius: 8px;
-    width: 80%; /* Or a fixed width like 500px */
+    width: 70%; /* Or a fixed width like 500px */
     max-width: 600px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    text-align: left; /* You already have this, perfect! */
+    font-size: 1.5rem;
+    line-height: 2rem;
+    word-spacing: 0.5rem;
 }
 
 .modal.active {
     display: flex;
+}
+
+input {
+    padding-right: 1rem;
+}
+
+button.delete-project-button {
+    background-color: #d01414;
+    padding: 1rem;
+}
+
+button.delete-task-button {
+    background-color: #d01414;
+    padding: 1rem;
+}
+button.new-task-button {
+    padding: 1rem;
 }

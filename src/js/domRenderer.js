@@ -22,6 +22,7 @@ export function displayProjectOnPage(project, taskModal, deleteProjectCallback) 
 
     const taskButton = document.createElement('button');
     taskButton.textContent = 'New Task';
+    taskButton.classList.add('new-task-button')
     taskButton.addEventListener('click', () => {
         taskModal.open();
         taskModal.currentProjectId = project.id;
@@ -54,6 +55,7 @@ export function displayTaskOnPage(task, deleteTaskCallback) {
 
     const deleteTaskButton = document.createElement('button')
     deleteTaskButton.textContent = 'Delete Task'
+    deleteTaskButton.classList.add('delete-task-button')
     deleteTaskButton.addEventListener('click', () => deleteTaskCallback(task.id));
 
     taskDiv.appendChild(taskNameElement)
