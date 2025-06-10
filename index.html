@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo List</title>
+<script defer src="main.js"></script></head>
+<body>
+<h1 id="header">Todo List</h1>
+<div id="todo-div"></div>
+<button id="open-new-project-modal">Create Project</button>
+
+<!-- Modal (oculto por defecto) -->
+<div class="modal" id="new-project-modal">
+    <div class="modal-content">
+        <span class="close-modal" id="close-new-project-modal">&times;</span>
+        <h2>New Project</h2>
+        <form id="project-form">
+            <label for="question-project-name">Name</label><input type="text" required id="question-project-name" placeholder="Name of the Project" >
+            <label for="question-project-description">Description</label><input type="text" id="question-project-description" placeholder="Description of the Project">
+            <button type="submit" id="save-project-button">Save</button>
+        </form>
+    </div>
+</div>
+<!-- DONE: Make a new modal for input of the information of the task -->
+<div class="modal" id="new-task-modal">
+    <div class="modal-content">
+        <span class="close-modal" id="close-new-task-modal">&times;</span>
+        <h2>New Task</h2>
+        <form id="task-form">
+            <label for="question-task-name">Name</label><input type="text" id="question-task-name" placeholder="Name of the task" required>
+            <label for="question-task-description">Description</label><input type="text" id="question-task-description" placeholder="Description of the task">
+            <label for="question-task-date">Date</label><input type="date" id="question-task-date" required>
+            <label for="question-task-priority">Priority</label><input type="range" id="question-task-priority" name="priority" min="0" max="5">
+            <button type="submit" id='save-task-button'>Save</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
