@@ -15,6 +15,5 @@ export function retrieveTaskInfo(currentProjectId) {
     const description = document.getElementById('question-task-description').value;
     const date = document.getElementById('question-task-date').value;
     const priority = document.getElementById('question-task-priority').value;
-
     return new Task("Task" + globalTaskIdCounter, name, description, date, priority, currentProjectId);
 }

@@ -67,7 +67,11 @@ saveProjectButton?.addEventListener("click", (e) => {
 const saveTaskButton = document.getElementById('save-task-button')
 saveTaskButton?.addEventListener("click", (e) => {
     e.preventDefault();
-    const newTask = retrieveTaskInfo()
+
+    const associatedProjectId = taskModal.currentProjectId;
+    console.log('Project ID when saving task:', associatedProjectId); // Para depurar
+
+    const newTask = retrieveTaskInfo(associatedProjectId)
     if (newTask) {
         console.log("Task Created", newTask)
         allTasks.push(newTask);
@@ -83,23 +87,41 @@ saveTaskButton?.addEventListener("click", (e) => {
 
 // Eliminar proyecto y sus tareas
 function deleteProject(projectId) {
-    allProjects = allProjects.filter(project => project.id !== projectId);
-    allTasks = allTasks.filter(task => task.projectId !== projectId);
+    const projectElement = document.querySelector(`.project-item[data-project-id="${projectId}"]`);
+
+    if (projectElement) {
+        projectElement.remove();
+        console.log(`Project with ID ${projectId} visually removed.`);
+    } else {
+        console.warn(`Project with ID ${projectId} not found in the DOM.`);
+    }
+
+    // 💥 Remove project from allProjects
+    allProjects = allProjects.filter(p => p.id !== projectId);
     saveToLocalStorage("projects", allProjects);
-    saveToLocalStorage("tasks", allTasks);
-    document.querySelector(`[data-project-id="${projectId}"]`).remove();
-    document.querySelectorAll(`[data-task-id]`).forEach(taskEl => {
-        const taskId = taskEl.getAttribute("data-task-id");
-        const task = allTasks.find(t => t.id === taskId);
-        if (task && task.projectId === projectId) {
-            taskEl.remove();
-        }
-    });
+    console.log(`Project with ID ${projectId} removed from allProjects and saved.`);
+
+    // 💥 Delete all tasks associated with the project using deleteTask
+    const associatedTasks = allTasks.filter(task => task.projectId === projectId);
+
+    if (associatedTasks.length > 0) {
+        associatedTasks.forEach(task => deleteTask(task.id));
+        console.log(`Removed ${associatedTasks.length} tasks associated with project ${projectId}.`);
+    } else {
+        console.log(`No tasks found for project ${projectId} to remove.`);
+    }
 }
 
 // Eliminar tarea
 function deleteTask(taskId) {
     allTasks = allTasks.filter(task => task.id !== taskId);
+
     saveToLocalStorage("tasks", allTasks);
-    document.querySelector(`[data-task-id="${taskId}"]`).remove();
+    const taskElement = document.querySelector(`[data-task-id="${taskId}"]`);
+    if (taskElement) {
+        taskElement.remove();
+        console.log(`Task with ID ${taskId} visually removed.`);
+    } else {
+        console.warn(`Task with ID ${taskId} not found in the DOM.`);
+    }
 }

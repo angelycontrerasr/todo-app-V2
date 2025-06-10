@@ -23,6 +23,7 @@ export function displayProjectOnPage(project, taskModal, deleteProjectCallback) 
     taskButton.addEventListener('click', () => {
         taskModal.open();
         taskModal.currentProjectId = project.id;
+        console.log(`Opening task modal for project: ${taskModal.currentProjectId}`);
     });
 
     projectDiv.append(name, description, editButton, deleteButton, taskButton);
