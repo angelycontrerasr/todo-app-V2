@@ -1,4 +1,6 @@
 export function displayProjectOnPage(project, taskModal, deleteProjectCallback) {
+
+
     const projectDiv = document.createElement('div');
     projectDiv.classList.add('project-item');
     projectDiv.setAttribute('data-project-id', project.id);

@@ -54,7 +54,7 @@ saveProjectButton?.addEventListener("click", (e) => {
         saveToLocalStorage('projects', allProjects); // 🔥 Aquí lo guardás
         console.log("Project created:", newProject);
         console.log("All current projects:", allProjects);
-        displayProjectOnPage(newProject);
+        displayProjectOnPage(newProject, taskModal, deleteProject);
         cleanProjectInputBoxesValue();
         projectModal.close();
     }
@@ -73,7 +73,7 @@ saveTaskButton?.addEventListener("click", (e) => {
         allTasks.push(newTask);
         saveToLocalStorage('tasks', allTasks);
         taskModal.close();
-        displayTaskOnPage(newTask);
+        displayTaskOnPage(newTask,  deleteTask);
         taskModal.currentProjectId = null;
         cleanTasksInputBoxesValue();
     } else {
